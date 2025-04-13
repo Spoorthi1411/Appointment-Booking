@@ -14,7 +14,7 @@ const Service = () => {
   
   return (
     <div>
-        <div className='flex gap-5 m-10 items-center justify-evenly'>
+        <div className='flex flex-wrap sm:flex-row gap-2 m-10 items-center justify-evenly'>
             {ServicesData.map((item,index)=>(
                 <Link onClick={()=>scrollTo(0,0)} to={`/services/${item.serviceName.toLowerCase()}`} key={index} className='flex flex-col items-center  flex-shrink-0 hover:translate-y-[-8px] transition-all duration-500'>
                     <FontAwesomeIcon icon={iconMap[item.serviceName]} className='size-8 bg-[#d86e7c] p-3 text-[#f7efe9] rounded-md'/>

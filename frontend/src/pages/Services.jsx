@@ -46,13 +46,13 @@ const Services = () => {
             </div>
             <div onClick={()=>serviceName === 'electricity' ? navigate('/services'): navigate('/services/electricity')} className={`flex w-[94vw sm:w-auto pl-3 py-1.5 pr-16 gap-2 text-lg border border-[#754848] bg-[#ebe0d9] rounded transition-all cursor-pointer`}>
               <FontAwesomeIcon className='text-2xl text-[#6c4141]' icon={faBolt} />
-              <p>Electricity</p>
+              <p>Electricity </p>
             </div>
           </div>
         <div className='w-full grid grid-cols-auto gap-4 gap-y-6'>
           {
             filterService.map((item,index)=>(
-              <div onClick={()=>navigate(`/services/${item.name}`)} className='border  m-2 shadow-lg shadow-slate-500 rounded-xl justify-center items-center overflow-hidden cursor-pointer ' key={index}>
+              <div onClick={()=>navigate(`/booking/${item.name}`)} className='border  m-2 shadow-lg shadow-slate-500 rounded-xl justify-center items-center overflow-hidden cursor-pointer ' key={index}>
                 <img className='w-full h-48 rounded-md' src={item.image} alt=''/>
                 <div className='p-4 '>
                   <div className='flex items-center gap-2 text-sm text-center text-sky-400'>
