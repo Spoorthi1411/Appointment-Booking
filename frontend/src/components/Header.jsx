@@ -7,7 +7,7 @@ const Header = () => {
     <div>
         <div className='flex items-center flex-col gap-3 justify-center'>
             <p className='font-bold text-[46px] text-center'>
-            Book <span className='text-[#d86e7c]'>Home Services </span><br/> in Just a Few Clicks! 
+            Book <span className='text-[#d86e7c]'>Home Services </span><br/> in Just one Click! 
             </p>
             <p className='text-xl text-gray-400 font-semibold text-sm'>Home Services Made Simple & Hassle-Free.</p>
             <div className='mt-4 flex'>
