@@ -38,6 +38,7 @@ const NavBar = () => {
           <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-500 z-20 hidden group-hover:block'>
             <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
               <p onClick={()=>navigate('/my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
+              <p onClick={()=>navigate('/my-bookings')} className='hover:text-black cursor-pointer'>My Bookings</p>
               <p onClick={()=>setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
             </div>
           </div>
