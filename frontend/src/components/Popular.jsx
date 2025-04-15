@@ -9,7 +9,7 @@ const Popular = () => {
   const {BusinessList} = useContext(AppContext)
   return (
     <div className='flex flex-col items-center gap-4 my-16 md:mx-10'>
-      <h1 className=' font-bold text-xl'>Popular Business</h1>
+      <h1 className=' font-bold text-xl'>Popular Services</h1>
       <div className='w-full grid grid-cols-auto gap-2 pt-5 gap-y-6 px-3 sm:px-6'>
         {BusinessList.slice(0,6).map((item,index)=>(
           <div onClick={()=>navigate(`/booking/${item.name}`)} className='border  m-2 shadow-lg shadow-slate-500 rounded-xl justify-center items-center overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
