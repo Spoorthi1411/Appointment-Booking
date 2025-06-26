@@ -82,13 +82,15 @@ const Booking = () => {
     <div>
       {/*-------------service details-----------*/}
       < div className='flex flex-col sm:flex-row gap-6 items-center sm:items-start mt-6'>
-        <img className='rounded-xl h-48 w-[300px]' src={serviceInfo.image} alt=''/>
-        <div className='flex flex-col m-2 gap-4 '>
+        <img className='rounded-xl h-64 w-[320px]' src={serviceInfo.image} alt=''/>
+        <div className='flex flex-col m-2 gap-2 '>
           
           <p className='text-sky-500 font-medium uppercase tracking-wide'>{serviceInfo.serviceName}</p>
           <p className='font-semibold text-3xl text-gray-800'>{serviceInfo.name}</p>
+          <p className=''>Description:</p>
+          <p className='font-light'>{serviceInfo.description}</p>
           <p>🕜Available 7:00 AM to 8:00 PM </p>
-          <p>✉️taskbazaar@gmail.com</p>
+          <p>💵Service Fee: $50</p>
         </div>
       </div>
       
