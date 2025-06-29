@@ -1,11 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { BusinessList } from '../assets/asserts'
+import { motion } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 
 const Booking = () => {
   const {servicetype} = useParams();
+  const navigate=useNavigate();
   const {BusinessList} = useContext(AppContext)
+
+  const controls = useAnimation();
+
   const daysOfWeek = ['SUN','MON','TUE','WED','THU','FRI','SAT']
 
   const [serviceInfo,setserviceInfo] =useState(null)
@@ -74,12 +83,24 @@ const Booking = () => {
   },[serviceInfo])
 
 
+  const pageVariants = {
+    initial: { opacity: 0, x: 100 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -100 },
+  };
+
   useEffect(()=>{
 
   },[serviceSlots])
 
   return serviceInfo && (
-    <div>
+    <motion.div
+      className="p-4"
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{ duration: 0.2 }}
+    >
       {/*-------------service details-----------*/}
       < div className='flex flex-col sm:flex-row gap-6 items-center sm:items-start mt-6'>
         <img className='rounded-xl w-[320px] m-2 h-64' src={serviceInfo.image} alt=''/>
@@ -114,7 +135,7 @@ const Booking = () => {
           {/* Time slot row */}
           <div
             id="slot-scroll"
-            className="flex items-center justify-start gap-3 w-full overflow-x-auto mt-4 px-4 scrollbar-thin scrollbar-thumb-gray-300"
+            className="flex items-center justify-start w-full overflow-x-auto mt-4 px-4 scrollbar-thin scrollbar-thumb-gray-300"
           >
             <div className="flex min-w-max gap-3">
               {serviceSlots.length > 0 && serviceSlots[slotIndex]?.length > 0 ? (
@@ -152,16 +173,28 @@ const Booking = () => {
             {serviceInfo.similarService.map((name, index) => {
               const match = BusinessList.find(item => item.name === name);
               return (
-                <div className='flex align-middle items-center border-2 border-gray-400 m-2 rounded-md hover:shadow-lg transition-all' key={index} onClick={() => setserviceInfo(match)}>
-                  <img className='h-32 w-32 m-1' src={match.image} alt={match.name} />
-                  <p className='text-xl'>{match.name}</p>
+                <div className='relative flex border-2 border-gray-400 m-2 rounded-md items-center' key={index} >
+                  <img className='h-20 w-24 m-1' src={match.image} alt={match.name} />
+                  <div className='flex flex-col flex-grow overflow-hidden pr-10'>
+                    <p className='text-base text-sky-400 '>{match.serviceName}</p>
+                    <p className='text-xl mb-2 break-words whitespace-normal'>{match.name}</p>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      await controls.start('exit');  // Trigger exit animation
+                      navigate(`/booking/${match.name}`);
+                    }}
+                    className='absolute right-2 rounded-full'
+                  >
+                    <FontAwesomeIcon className='hover:shadow-lg transition-all hover:bg-orange-200 size-5 border-2 rounded-full border-rose-950 text-black' icon={faArrowRight}/>
+                  </button>
                 </div>
               );
             })}
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
