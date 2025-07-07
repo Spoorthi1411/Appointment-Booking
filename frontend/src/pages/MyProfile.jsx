@@ -18,7 +18,7 @@ const MyProfile = () => {
 
   const [isEdit,setIsEdit] = useState(false)
   return (
-    <div className='w-full flex gap-10 text-sm lg:flex-row'>
+    <div className='w-full flex gap-10 text-sm flex-col sm:flex-row'>
       <img className='w-36 rounded h-36' src={userData.image} alt=''/>
       <div className='w-2/3'>
         {
@@ -27,8 +27,8 @@ const MyProfile = () => {
           : <p className='font-medium text-3xl text-neutral-800 mt-4'>{userData.name}</p> 
         }
         <hr className='bg-zinc-400 h-[1px] border-none'/>
-        <div className='flex justify-between '>
-          <div className='text-base w-1/2 mr-28'>
+        <div className='flex justify-between flex-col sm:flex-row w-screen sm:w-full'>
+          <div className='text-base sm:w-1/2 '>
             <p className='text-neutral-500 mt-3'>CONTACT INFORMATION</p>
             <div className='grid grid-cols-[2fr_4fr] gap-y-2.5 mt-3 text-neutral-700'>
               <p className='font-medium'>Email id :</p>
@@ -55,10 +55,10 @@ const MyProfile = () => {
             }
             </div>
           </div>
-          <div className='text-base w-1/2'>
-            <p className='text-neutral-500 mt-3'>BASIC INFORMATION</p>
-            <div className='grid grid-cols-[2fr_4fr] gap-y-2.5 mt-3 text-neutral-700 mr-2'>
-              <p className='font-medium'>Gender:</p>
+          <div className='text-base sm:w-1/2'>
+            <p className='text-neutral-500 mt-5 sm:mt-3'>BASIC INFORMATION</p>
+            <div className='grid grid-cols-[2fr_4fr] gap-y-2.5 mt-3 text-neutral-700'>
+              <p className='font-medium'>Gender :</p>
               {
               isEdit 
                 ? <select className='max-w-25 bg-gray-100 text-[#aba094]' onChange={(e)=>setUserData(prev => ({...prev,gender:e.target.value}))} value={userData.gender}>
@@ -67,7 +67,7 @@ const MyProfile = () => {
                 </select>
                 : <p className='text-black'>{userData.gender}</p> 
               }
-              <p className='font-medium'>Birthday:</p>
+              <p className='font-medium'>Birthday :</p>
               {
                 isEdit 
                 ? <input className='max-w-25 bg-gray-100 text-[#aba094]' onChange={(e)=>setUserData(prev => ({...prev,dob:e.target.value}))} value={userData.dob} type='date'/>
