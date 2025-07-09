@@ -104,7 +104,7 @@ const Booking = () => {
       {/*-------------service details-----------*/}
       < div className='flex flex-col sm:flex-row gap-6 items-center sm:items-start mt-6'>
         <img className='rounded-xl w-[320px] m-2 h-64' src={serviceInfo.image} alt=''/>
-        <div className='flex flex-col m-2 gap-2 border-2 border-gray-400 p-1 rounded-sm h-64'>
+        <div className='flex flex-col m-2 gap-2 border-2 border-gray-400 p-1 rounded-sm '>
           <p className='text-sky-500 font-medium uppercase tracking-wide'>{serviceInfo.serviceName}</p>
           <p className='font-semibold text-3xl text-gray-800'>{serviceInfo.name}</p>
           <p className=''>Description:</p>
@@ -137,7 +137,7 @@ const Booking = () => {
             id="slot-scroll"
             className="flex items-center justify-start w-full overflow-x-auto mt-4 px-4 scrollbar-thin scrollbar-thumb-gray-300"
           >
-            <div className="flex min-w-max gap-3">
+            <div className="flex min-w-max gap-3 ">
               {serviceSlots.length > 0 && serviceSlots[slotIndex]?.length > 0 ? (
                 serviceSlots[slotIndex].map((item, index) => (
                   <p
