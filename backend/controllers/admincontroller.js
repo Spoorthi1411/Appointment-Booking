@@ -7,17 +7,20 @@ import BusinessListModel from "../models/BusinessListModel.js"
 //API for adding service
 const addService=async(req,res)=>{
     try{
-        const { name,email, password, serviceName, description,  fees } = req.body
+        console.log("req.body:", req.body);
+        console.log("email field value:", req.body.email);
+        console.log("req.file:", req.file);
+        const { name,email, password, serviceName, description,  fees , available } = req.body
         const imageFile=req.imageFile
         
         //checking for all data to add doctor
-        if(!name || !email|| !password|| !serviceName|| !description|| !fees ){
+        if(!name || !email|| !password|| !serviceName|| !description|| !fees || available === undefined){
             return res.json({success:false,message:"missing details"})
         }
 
 
         //validating email format
-        if(validator.isEmail(email)){
+        if(!validator.isEmail(email)){
             return res.json({success:false,message:"enter valid email"})
         }
 
@@ -42,6 +45,7 @@ const addService=async(req,res)=>{
             password:hashedPassword,
             serviceName,
             description,
+            available,
             fees,
             date:Date.now()
         }
