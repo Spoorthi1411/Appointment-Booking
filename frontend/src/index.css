@@ -8,5 +8,5 @@
 }
 
 .active hr{
-    @apply block
+    @apply block;
 }
