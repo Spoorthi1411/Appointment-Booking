@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 
-const login = () => {
+const Login = () => {
 
     const [state,setState] = useState('Admin')
 
@@ -14,4 +14,4 @@ const login = () => {
   )
 }
 
-export default login
+export default Login
