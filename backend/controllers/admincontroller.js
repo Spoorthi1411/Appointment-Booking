@@ -2,6 +2,8 @@ import validator from "validator"
 import bcrypt from "bcrypt"
 import { v2 as cloudinary } from"cloudinary"
 import BusinessListModel from "../models/BusinessListModel.js"
+import path from 'path';
+import jwt from "jsonwebtoken";
 
 
 //API for adding service
@@ -10,8 +12,13 @@ const addService=async(req,res)=>{
         console.log("req.body:", req.body);
         console.log("email field value:", req.body.email);
         console.log("req.file:", req.file);
-        const { name,email, password, serviceName, description,  fees , available } = req.body
-        const imageFile=req.imageFile
+        const { name ,email , password, serviceName, description,  fees , available } = req.body
+        const imagePath = req.file?.path;
+    if (!imagePath) {
+      return res.json({ success: false, message: "No image file uploaded" });
+    }
+
+    
         
         //checking for all data to add doctor
         if(!name || !email|| !password|| !serviceName|| !description|| !fees || available === undefined){
@@ -34,9 +41,15 @@ const addService=async(req,res)=>{
         const salt=await bcrypt.genSalt(10)
         const hashedPassword=await bcrypt.hash(password,salt)
 
-        //upload image to cloudinary
-        const imageUpload=await cloudinary.uploader.upload(imageFile,{resource_type:"image"})
-        const imageUrl=imageUpload.secure_url
+        // Upload to Cloudinary
+        const imageUpload = await cloudinary.uploader.upload(imagePath, {
+        resource_type: "image",
+        });
+        if (!imageUpload || !imageUpload.secure_url) {
+            return res.json({ success: false, message: "Cloudinary upload failed" });
+        }
+
+    const imageUrl = imageUpload.secure_url;
 
         const serviceData={
             name,
@@ -61,4 +74,23 @@ const addService=async(req,res)=>{
     }
 }
 
-export {addService}
+// api for admin login
+const loginAdmin = async(req,res)=>{
+    try{
+
+        const {email,password} = req.body
+
+        if(email=== process.env.ADMIN_EMAIL && password===process.env.ADMIN_PASSWORD){
+            const token=jwt.sign(email+password,)
+        } else{
+            res.json({success:false,message:"Invalid credentials"})
+        }
+
+    } catch(error){
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+export {addService,loginAdmin}
