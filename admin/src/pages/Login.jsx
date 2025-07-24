@@ -22,11 +22,15 @@ const Login = () => {
               localStorage.setItem('aToken',data.token)
               setAToken(data.token)
             }
+            else{
+              toast.error(data.message)
+            }
           }else{
-            toast.error(data.message)
+            toast.error("Service login not implemented yet")
           }
         } catch (error) {
-          
+            console.error("Login error:", error);
+            toast.error("Login failed: " + (error.response?.data?.message || error.message));
         }
     }
     

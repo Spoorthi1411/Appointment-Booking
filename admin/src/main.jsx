@@ -6,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom'
 import AdminContextProvider from './context/AdminContext.jsx'
 import ServiceContextProvider from './context/ServiceContext.jsx'
 import AppContextProvider from './context/AppContext.jsx'
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
