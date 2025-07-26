@@ -4,6 +4,7 @@ import { v2 as cloudinary } from"cloudinary"
 import BusinessListModel from "../models/BusinessListModel.js"
 import path from 'path';
 import jwt from "jsonwebtoken";
+import userModel from "../models/userModel.js";
 
 
 //API for adding service
@@ -92,6 +93,8 @@ const loginAdmin = async(req,res)=>{
         res.json({success:false,message:error.message})
     }
 }
+
+
 
 
 export {addService,loginAdmin}
