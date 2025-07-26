@@ -95,7 +95,6 @@ const loginAdmin = async(req,res)=>{
 }
 
 
-<<<<<<< HEAD
 // API to get all services list for admin pannel
 const allEmployees = async (req,res)=>{
     try {
@@ -108,8 +107,3 @@ const allEmployees = async (req,res)=>{
 }
 
 export {addService,loginAdmin,allEmployees}
-=======
-
-
-export {addService,loginAdmin}
->>>>>>> 30fbe432144bd49b45c06abbb77ad0c4903c5a84
