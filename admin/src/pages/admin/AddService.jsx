@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { assets } from '../../assets/assets';
 import { AdminContext } from '../../context/AdminContext';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+
 
 const AddService = () => {
 
@@ -44,14 +47,34 @@ const AddService = () => {
       formData.append('password',password)
       formData.append('experience',experience)
       formData.append('fees',fees)
-      formData.append('about',about)
+      formData.append('description',about)
       formData.append('category',category)
-      formData.append('service',service)
+      formData.append('serviceName',service)
+      formData.append('available',true)
 
       formData.forEach((value,key)=>{
         console.log(`${key}:${value}`);
       })
 
+      const {data} = await axios.post(backendUrl + '/api/admin/add-service',formData,{headers:{aToken}})
+
+      console.log("API Response:", data);
+
+      if(data.success){
+        toast.success(data.message)
+        setPic(false)
+        setName('')
+        setEmail('')
+        setPassword('')
+        setFees('')
+        setAbout('')
+        setExperience('1 Year')
+        setService('')
+        setCategory('')
+      }else{
+        toast.error(error.message)
+        console.log(error)
+      }
     } catch (error) {
       
     }
