@@ -94,4 +94,15 @@ const loginAdmin = async(req,res)=>{
 }
 
 
-export {addService,loginAdmin}
+// API to get all services list for admin pannel
+const allEmployees = async (req,res)=>{
+    try {
+        const employees = await BusinessListModel.find({}).select('-password')
+        res.json({success:true,employees})
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {addService,loginAdmin,allEmployees}
