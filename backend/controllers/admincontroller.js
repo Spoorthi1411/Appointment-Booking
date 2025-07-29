@@ -13,7 +13,7 @@ const addService=async(req,res)=>{
         console.log("req.body:", req.body);
         console.log("email field value:", req.body.email);
         console.log("req.file:", req.file);
-        const { name ,email , password, serviceName, description,  fees , available } = req.body
+        const { name ,email , password, serviceName, description,category,  fees , available } = req.body
         const imagePath = req.file?.path;
     if (!imagePath) {
       return res.json({ success: false, message: "No image file uploaded" });
@@ -58,6 +58,7 @@ const addService=async(req,res)=>{
             image:imageUrl,
             password:hashedPassword,
             serviceName,
+            category,
             description,
             available,
             fees,

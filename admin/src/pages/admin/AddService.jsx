@@ -1,4 +1,3 @@
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { assets } from '../../assets/assets';
@@ -56,7 +55,7 @@ const AddService = () => {
         console.log(`${key}:${value}`);
       })
 
-      const {data} = await axios.post(backendUrl + '/api/admin/add-service',formData,{headers:{aToken}})
+      const {data} = await axios.post(backendUrl + '/api/admin/add-service',formData,{headers:{aToken,'Content-Type':'multipart/form-data'}})
 
       console.log("API Response:", data);
 
@@ -72,11 +71,11 @@ const AddService = () => {
         setService('')
         setCategory('')
       }else{
-        toast.error(error.message)
-        console.log(error)
+        toast.error(data.message)
       }
     } catch (error) {
-      
+        toast.error(error.message)
+        console.log(error)
     }
   }
 
@@ -162,7 +161,7 @@ const AddService = () => {
           <p className='mt-4 mb-2'>About Service</p>
           <textarea onChange={(e)=>setAbout(e.target.value)} value={about} className='w-full px-4 pt-2 border border-gray-300 rounded' placeholder='write about the service'/>
         </div>
-        <button type='submit' className='bg-[#d86e7c] px-10 py-3 mt-4 text-white rounded-full'>Add Service</button>
+        <button type='submit' className='bg-[#d86e7c] px-10 py-3 mt-4 text-white rounded-full hover:cursor-pointer'>Add Service</button>
       </div>
     </form>
   )

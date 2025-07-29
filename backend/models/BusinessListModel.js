@@ -7,6 +7,7 @@ const BusinessListSchema= new mongoose.Schema({
     image:{type:String, required:true},
     serviceName:{type:String, required:true},
     description:{type:String, required:true},
+    category:{type:String, required:true},
     available:{type:Boolean, required:true},
     fees:{type:Number, required:true},
     date:{type:Number, required:true},

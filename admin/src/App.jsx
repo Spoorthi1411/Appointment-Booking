@@ -28,6 +28,7 @@ const App = () => {
           <Route path='/all-appointments' element={<AllAppointments/>} />
           <Route path='/add-service' element={<AddService/>} />
           <Route path='/service-list' element={<ServicesList/>} />
+          <Route path='/service-list/:category' element={<ServicesList/>}/>
         </Routes>
       </div>
     </div>
