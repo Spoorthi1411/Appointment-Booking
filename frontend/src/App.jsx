@@ -14,13 +14,15 @@ import MyServices from './pages/MyServices';
 import Booking from './pages/Booking';
 import NavBar from './components/NavBar';
 import Footer from './components/footer';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const location = useLocation();
 
   return (
     <div className='mx-4 sm:mx-[10%]'>
+      <ToastContainer/>
       <NavBar />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>

@@ -5,6 +5,7 @@ import connectDB from './config/mongodb.js'
 import connectCloudinary from './config/cloudinary.js'
 import adminRouter from './routes/adminRoute.js'
 import userRouter from './routes/userRoute.js'
+import employeeRouter from './routes/serviceRoute.js'
 
 
 //app config
@@ -24,6 +25,7 @@ app.use(cors())
 //api endpoints
 app.use('/api/admin',adminRouter)
 app.use('/api/user',userRouter)
+app.use('/api/employee',employeeRouter)
 
 app.get('/',(req,res)=>{
     res.send('API WORKING')

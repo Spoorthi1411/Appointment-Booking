@@ -11,7 +11,7 @@ const ServicesList = () => {
     const [showCategories,setShowCategories] = useState(false)
     const navigate=useNavigate();
 
-    const {employees,aToken,getAllEmployees} = useContext(AdminContext);
+    const {employees,aToken,getAllEmployees,changeAvailability} = useContext(AdminContext);
 
     const applyFilter = () => {
       if (category) {
@@ -38,7 +38,7 @@ const ServicesList = () => {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row lg:items-start gap-5 mt-5">
+      <div className="m-5 max-h-[90vh] overflow-y-scroll flex flex-col sm:flex-row lg:items-start gap-5 mt-5">
         <button className={`py-1 px-3 border rounded text-lg font-semibold transition-all sm:hidden ${showCategories ? 'bg-[#886060] text-[#ebe0d9]' : ''}`} onClick={() => setShowCategories(prev => !prev)}> Category </button>
         <div className={`flex-col ml-2 gap-4 text-sm text-[#6c4141] ${showCategories ? 'flex' : 'hidden sm:flex'}`}>
             <div onClick={() => navigate('/service-list/cleaning')} className={`flex w-60vw sm:w-auto pl-3 py-1.5 pr-16 gap-2 text-lg border border-[#754848] bg-[#ebe0d9] rounded transition-all cursor-pointer hover:shadow-md hover:shadow-red-900`}>
@@ -73,16 +73,20 @@ const ServicesList = () => {
 
         <div className="w-full grid grid-cols-auto gap-2 gap-y-2">
           {filterEmployees.map((emp, index) => (
-            <div onClick={() => navigate(`/employee-details/${emp._id}`)} className="w-36 h-52 border m-2 shadow-lg shadow-slate-500 rounded-xl justify-center items-center overflow-hidden cursor-pointer" key={index}>
-                <img className="w-full rounded-md h-32" src={emp.image} alt="" />
-                  <div className="p-1">
-                    <p className="font-bold">{emp.name}</p>
-                    <div className="flex items-center text-sm text-center">
+            <div className="w-40 h-60 border m-2  rounded-xl justify-center items-center overflow-hidden" key={index}>
+                <img className="w-full rounded-md h-36 object-cover" src={emp.image} alt="" />
+                  <div className="m-1">
+                    <p className="font-bold mb-1">{emp.name}</p>
+                    <div className="flex items-center text-sm text-center gap-1">
                       <p className="">{emp.serviceName}</p>
-                      <p className='text-gray-400 ml-1 text-sm'>({emp.category})</p>
+                      <p className='text-gray-400  text-sm'>({emp.category})</p>
                     </div>
                   </div>
-                  <button className="text-center w-full text-black text-base font-medium hover:cursor-pointer hover:underline">View Details</button>
+                  <div className='m-1 mt-2 flex items-center gap-1 text-sm'>
+                    <input onChange={()=>changeAvailability(emp._id)} type='checkbox' checked={emp.available}/>
+                    <p>Available</p>
+                  </div>
+                  {/* <button className="text-center w-full text-black text-base font-medium hover:cursor-pointer hover:underline">View Details</button> */}
             </div>
           ))}
         </div>

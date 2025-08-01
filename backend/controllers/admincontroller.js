@@ -108,7 +108,3 @@ const allEmployees = async (req,res)=>{
 }
 
 export {addService,loginAdmin,allEmployees}
-<<<<<<< HEAD
-=======
-
->>>>>>> 6bfeabd216cb53f6c958f3f0466ca1053c3f0bb0
