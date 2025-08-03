@@ -1,4 +1,7 @@
 import BusinessListModel from "../models/BusinessListModel.js"
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
 
 const changeAvailability = async (req,res) => {
     try {
@@ -23,4 +26,32 @@ const employeesList = async(req,res)=>{
     
     }
 }
-export {changeAvailability,employeesList}
+
+// API for employee login
+const loginEmployee = async (req,res) => {
+    try {
+        const { email, password } = req.body
+        const employee = await BusinessListModel.findOne({email})
+
+        if(!employee){
+            return res.json({success:false,message:'Invalid Credentials'})
+        }
+
+        const isMatch = await bcrypt.compare(password, employee.password)
+
+        if(isMatch){
+            const token = jwt.sign({id:employee._id},process.env.JWT_SECRET)
+
+            res.json({success:true,token})
+        }else{
+            req.json({success:false,message:'Invalid credentials'})
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+export {changeAvailability,employeesList,loginEmployee}
