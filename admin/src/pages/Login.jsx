@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { AdminContext } from '../context/AdminContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { ServiceContext } from '../context/ServiceContext'
 
 const Login = () => {
 
@@ -11,6 +12,7 @@ const Login = () => {
     const [password,setPassword] = useState('')
 
     const {setAToken,backendUrl} = useContext(AdminContext)
+    const {setDToken} = useContext(ServiceContext)
 
     const onSubmitHandler = async (event) =>{
         event.preventDefault()
@@ -26,7 +28,16 @@ const Login = () => {
               toast.error(data.message)
             }
           }else{
-            toast.error("Service login not implemented yet")
+            const {data} = await axios.post(backendUrl + '/api/employee/login',{email,password})
+            if(data.success){
+              localStorage.setItem('dToken',data.token)
+              setDToken(data.token)
+              console.log(data.token);
+              
+            }
+            else{
+              toast.error(data.message)
+            }
           }
         } catch (error) {
             console.error("Login error:", error);
