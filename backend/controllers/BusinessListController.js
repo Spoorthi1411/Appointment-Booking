@@ -1,12 +1,12 @@
 import BusinessListModel from "../models/BusinessListModel.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import appointmentModel from "../models/appointmentModel.js"
 
 
 const changeAvailability = async (req,res) => {
     try {
-        const {employeeId} = req.body
-
+        const employeeId = req.user.id;
         const employeeData = await BusinessListModel.findById(employeeId)
         await BusinessListModel.findByIdAndUpdate(employeeId,{available: !employeeData.available})
         res.json({success:true, message: 'Availability changed'})
@@ -54,4 +54,17 @@ const loginEmployee = async (req,res) => {
 }
 
 
-export {changeAvailability,employeesList,loginEmployee}
+//API to get appointments for service panel
+const appointmentsService = async (req,res) =>{
+    try {
+        const employeeId = req.user.id;
+        const appointments= await appointmentModel.find({employeeId})
+
+        res.json({success:true,appointments})
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {changeAvailability,employeesList,loginEmployee,appointmentsService}
