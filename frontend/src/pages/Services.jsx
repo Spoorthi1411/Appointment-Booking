@@ -5,30 +5,38 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBroom,faPaintRoller,faTools,faTruckMoving, faBolt} from "@fortawesome/free-solid-svg-icons";
 
 const Services = () => {
-    const {serviceName}=useParams();
-    const [filterService,setFilterService]=useState([])
-    const [showCategories,setShowCategories] = useState(false)
-    const navigate=useNavigate();
 
-    const {services} = useContext(AppContext);
-    const applyFilter = () =>{
-      if(serviceName){
-        setFilterService(services.filter(category => category.serviceName.toLowerCase() === serviceName.toLowerCase()))
-      } else{
-        setFilterService(services)
-      }
+  const {category} = useParams();
+  const {employees} = useContext(AppContext);
+  const [filterEmployees,setFilterEmployees] = useState([]);
+  const navigate = useNavigate();
+  const [showCategories,setShowCategories] = useState(false);
+
+  const applyFilter = () =>{
+    if(category){
+      setFilterEmployees(
+        employees.filter(emp => emp.category?.toLowerCase() === category.toLowerCase())
+      );
+    }else{
+      setFilterEmployees(employees);
     }
+  };
+  
+  useEffect(()=>{
+    applyFilter();
+  },[employees,category]);
 
-    useEffect(()=>{
-      applyFilter()
-    },[services,serviceName])
-
-  return (
-    <div>
-      <div>
-        <div className='flex flex-col sm:flex-row lg:items-start gap-5 mt-5 '>
-          <button className={`py-1 px-3 border rounded text-lg font-semibold transition-all sm:hidden ${showCategories ? 'bg-[#886060] text-[#ebe0d9]' : ''}`} onClick={()=>setShowCategories(prev => !prev)}>Category</button>
-          <div className={` flex-col gap-4 text-sm text-[#6c4141] ${showCategories ? 'flex' : 'hidden sm:flex'}`}>
+  return(
+    <div className="flex flex-row">
+      <button
+        className={`py-1 px-3 border rounded text-lg font-semibold transition-all sm:hidden ${
+          showCategories ? 'bg-[#886060] text-[#ebe0d9]' : ''
+        }`}
+        onClick={() => setShowCategories(prev => !prev)}
+      >
+        Category
+      </button>
+      <div className={`mt-4 p-4 flex-col gap-4 text-sm text-[#6c4141] ${showCategories ? 'flex' : 'hidden sm:flex'}`}>
             <div onClick={()=>navigate('/services/cleaning')} className={`flex w-94vw sm:w-auto pl-3 py-1.5 pr-16 gap-2 text-lg border border-[#754848] bg-[#ebe0d9] rounded transition-all cursor-pointer hover:shadow-md hover:shadow-red-900`}>
             <FontAwesomeIcon className='text-2xl text-[#6c4141]' icon={faBroom} />
               <p>Cleaning</p> 
@@ -52,27 +60,50 @@ const Services = () => {
             <div className='flex justify-center'>
               <button onClick={()=>navigate('/services')} className='flex w-fit text-center px-3 py-1 gap-2 text-lg border bg-[#886060] border-[#ebe0d9] text-[#ebe0d9] rounded transition-all cursor-pointer hover:shadow-md hover:shadow-gray-400'>All</button>
             </div>
-          </div>
-        <div className='w-full grid grid-cols-auto gap-4 gap-y-6'>
-          {
-            filterService.map((item,index)=>(
-              <div onClick={()=>navigate(`/booking/${item.name}`)} className='border m-2 shadow-lg shadow-slate-500 rounded-xl justify-center items-center overflow-hidden cursor-pointer ' key={index}>
-                <img className='w-full h-48 rounded-md' src={item.image} alt=''/>
-                <div className='p-4 '>
-                  <div className='flex items-center gap-2 text-sm text-center text-sky-400'>
-                    <p className=''>{item.serviceName}</p>
-                  </div>
-                  <p className='font-bold'>{item.name}</p>
-                </div>
-                <button className='w-[calc(100%-20px)] mx-[10px] mb-3 border-solid p-2 rounded-full bg-[#d86e7c] text-white text-base font-medium'>Book Now</button>
+      </div>
+      <div className='items-center w-full'>
+        <h2 className="text-2xl font-bold mb-6 text-center">Our Services</h2>
+
+        {/* Grid of services */}
+        <div className="pl-4 w-full grid grid-cols-auto gap-4">
+          {filterEmployees.map((item, index) => (
+            <div
+              key={index}
+              className="border rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer overflow-hidden bg-white"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-2">
+                <h3 className="text-lg font-semibold">{item.name}</h3>
+                <p className="text-gray-500">{item.serviceName}</p>
+                <p className="text-md font-semibold text-green-600">
+                  ₹{item.fees}
+                </p>
+                <span
+                  className={`inline-block mt-2 px-3 py-1 text-sm rounded-full ${
+                    item.available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                  }`}
+                >
+                  {item.available ? 'Available' : 'Not Available'}
+                </span>
               </div>
-            ))
-          }
-        </div>
+              <div className="px-4 pb-4">
+                <button
+                  onClick={() => navigate(`/booking/${item._id}`)}
+                  className="w-full py-2 rounded-full bg-[#d86e7c] text-white font-medium hover:bg-[#c65d6d]"
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   )
 }
 
-export default Services
+export default Services;

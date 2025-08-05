@@ -6,7 +6,11 @@ import appointmentModel from "../models/appointmentModel.js"
 
 const changeAvailability = async (req,res) => {
     try {
-        const employeeId = req.user.id;
+        const { employeeId } = req.body;
+
+        if (!employeeId) {
+            return res.status(400).json({ success: false, message: "Employee ID missing" });
+        }
         const employeeData = await BusinessListModel.findById(employeeId)
         await BusinessListModel.findByIdAndUpdate(employeeId,{available: !employeeData.available})
         res.json({success:true, message: 'Availability changed'})
