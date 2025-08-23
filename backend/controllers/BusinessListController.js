@@ -70,5 +70,15 @@ const appointmentsService = async (req,res) =>{
         res.json({success:false,message:error.message})
     }
 }
+//API to markappointment completed for service panel
+const appointmentComplete= async()=>{
+    try {
+        const {employeeId, appointmentId} = req.body
 
+        const appointmentData = await appointmentModel.findById(appointmentId)
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
 export {changeAvailability,employeesList,loginEmployee,appointmentsService}

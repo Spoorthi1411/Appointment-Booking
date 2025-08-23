@@ -1,6 +1,7 @@
 import { createContext,useState } from "react"
 import axios from 'axios'
 import {toast} from 'react-toastify'
+import { assets } from "../assets/assets"
 
 export const ServiceContext = createContext()
 
@@ -8,7 +9,19 @@ const ServiceContextProvider = (props) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [dToken,setDToken] = useState(localStorage.getItem('dToken')? localStorage.getItem('dToken'):'')
-    const [appointments, setAppointments] =useState([])
+    const [appointments, setAppointments] =useState([
+        {
+            userData: {
+            name: "John Doe",
+            image: assets.tick_icon,
+            address: "123 Main Street, NY"
+            },
+            payment: true,
+            slotDate: new Date(),
+            slotTime: "10:30 AM",
+            amount: 500
+        }
+    ])
 
     const getAppointments = async()=>{
         try {
