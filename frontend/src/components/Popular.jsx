@@ -12,7 +12,7 @@ const Popular = () => {
       <h1 className=' font-bold text-xl'>Popular Services</h1>
       <div className='w-full grid grid-cols-auto gap-2 pt-5 gap-y-6 px-3 sm:px-6'>
         {BusinessList.slice(0,6).map((item,index)=>(
-          <div onClick={()=>navigate(`/booking/${item.name}`)} className='border  m-2 shadow-lg shadow-slate-500 rounded-xl justify-center items-center overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
+          <div onClick={()=>navigate(`/services/${item.serviceName}`)} className='border  m-2 shadow-lg shadow-slate-500 rounded-xl justify-center items-center overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
             <img className='w-full h-48 rounded-md' src={item.image} alt=''/>
             <div className='p-4 '>
               <div className='flex items-center gap-2 text-sm text-center text-sky-400'>

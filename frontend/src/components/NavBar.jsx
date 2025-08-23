@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { asserts } from '../assets/asserts'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faBars, faCircleUser} from "@fortawesome/free-solid-svg-icons";
 import {faCircleXmark} from "@fortawesome/free-solid-svg-icons";
+import { AppContext } from '../context/AppContext';
 const NavBar = () => {
     const navigate=useNavigate();
+
+    const {token,setToken} = useContext(AppContext)
+
     const [showMenu,setShowMenu]=useState(false);
-    const [token,setToken]=useState(true);
+
+    const logout = () =>{
+      setToken(false)
+      localStorage.removeItem('token')
+    }
 
   return (
     <div className='flex items-center justify-between text-sm '>
@@ -55,7 +63,7 @@ const NavBar = () => {
             <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
               <p onClick={()=>navigate('/my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
               <p onClick={()=>navigate('/my-bookings')} className='hover:text-black cursor-pointer'>My Bookings</p>
-              <p onClick={()=>setToken(false)} className='hover:text-black cursor-pointer'>Logout</p>
+              <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
             </div>
           </div>
         </div> : <button onClick={()=>navigate('/login')} className='bg-[#d86e7c] p-3 rounded-full border-black border-1 text-white font-semibold hidden md:block'>Create Account</button>}
