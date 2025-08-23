@@ -7,7 +7,7 @@ import { assets } from '../../assets/assets'
 
 export const ServiceAppointments = () => {
 
-  const {dToken,appointments,getAppointments } = useContext(ServiceContext)
+  const {dToken,appointments,getAppointments, completeAppointment, cancelAppointment } = useContext(ServiceContext)
   const {slotDateFormat,currency} = useContext(AppContext)
   useEffect(()=>{
     // if(dToken){
@@ -44,8 +44,8 @@ export const ServiceAppointments = () => {
                 <p>{slotDateFormat(item.slotDate?.toString())},{item.slotTime}</p>
                 <p>{currency}{item.amount}</p>
                 <div className='flex'>
-                  <img className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
-                  <img className='w-10 cursor-pointer' src={assets.tick_icon} alt="" />
+                  <img onClick={()=>cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
+                  <img onClick={()=>completeAppointment(item._id)} className='w-10 cursor-pointer' src={assets.tick_icon} alt="" />
                 </div>
             </div>
 

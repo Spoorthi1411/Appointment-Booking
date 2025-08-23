@@ -39,11 +39,42 @@ const ServiceContextProvider = (props) => {
             
         }
     }
+
+    const completeAppointment= async (appointmentId) => {
+        try {
+            const {data} = await axios.post(backendUrl+'/api/service/complete-appointment', {appointmentId},{headers:{dToken}})
+            if (data.success) {
+                toast.success(data.message)
+                getAppointments()
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message)
+        }
+    }
+    const cancelAppointment= async (appointmentId) => {
+        try {
+            const {data} = await axios.post(backendUrl+'/api/service/cancel-appointment', {appointmentId},{headers:{dToken}})
+            if (data.success) {
+                toast.success(data.message)
+                getAppointments()
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message)
+        }
+    }
+
     const value = {
         dToken,setDToken,
         backendUrl,
         appointments,setAppointments,
-        getAppointments,
+        getAppointments,cancelAppointment,
+        completeAppointment,
     }
 
     return (
