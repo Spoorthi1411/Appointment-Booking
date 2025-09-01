@@ -3,17 +3,21 @@ import { useParams } from 'react-router-dom'
 import { useNavigate} from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { BusinessList } from '../assets/asserts'
 import { motion } from 'framer-motion';
 import { useAnimation } from 'framer-motion';
+import { faCircleInfo, faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify'
+import RelatedServices from '../components/RelatedServices'
+import axios from 'axios'
+
 
 const Booking = () => {
-  const {servicetype} = useParams();
+  const {employeeId} = useParams();
   const navigate=useNavigate();
-  const {BusinessList, currencySymbol, backendUrl, token, getEmployeesData} = useContext(AppContext)
+  const {BusinessList, currencySymbol, token} = useContext(AppContext)
   const controls = useAnimation();
+  const {employees,backendUrl,getEmployeesData} = useContext(AppContext)
+
 
   const daysOfWeek = ['SUN','MON','TUE','WED','THU','FRI','SAT']
 
@@ -24,7 +28,7 @@ const Booking = () => {
   const [slotTime,setSlotTime] = useState('')
 
   const fetchServiceInfo = async () => {
-    const serviceInfo =BusinessList.find(serve => serve.name === servicetype)
+    const serviceInfo = employees.find(serve => serve._id === employeeId)
     setserviceInfo(serviceInfo)
 
   }
@@ -74,27 +78,45 @@ const Booking = () => {
     }
   }
 
-  const bookAppointment = async () => {
-    if (!token) {
+  const bookAppointment = async()=>{
+    if(!token){
       toast.warn('Login to book appointment')
       return navigate('/login')
     }
+
+    try {
+      const date = serviceSlots[slotIndex][0].datetime
+
+      let day= date.getDate()
+      let month = date.getMonth()+1
+      let year = date.getFullYear()
+
+      const slotDate = day + "-" + month + "-" + year
+
+      const {data} = await axios.post(backendUrl+'/api/user/book-service',{employeeId,slotDate,slotTime},{headers:{token}})
+      if(data.success){
+        toast.success(data.message)
+        getEmployeesData()
+        navigate('/my-services')
+      }
+      else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
+
 
   useEffect(()=>{
     fetchServiceInfo()
-  },[BusinessList,servicetype])
+  },[employees,employeeId])
 
   useEffect(()=>{
     getAvailableSlots()
   },[serviceInfo])
 
 
-  const pageVariants = {
-    initial: { opacity: 0, x: 100 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -100 },
-  };
 
   useEffect(()=>{
 
@@ -110,7 +132,12 @@ const Booking = () => {
     >
       {/*-------------service details-----------*/}
       < div className='flex flex-col sm:flex-row gap-6 items-center sm:items-start mt-6'>
-        <img className='rounded-xl w-[320px] m-2 h-64' src={serviceInfo.image} alt=''/>
+        <img 
+          className="bg-white w-full sm:max-w-72 rounded-lg h-64 object-cover" 
+          src={serviceInfo.image} 
+          alt="" 
+        />
+
         <div className='flex flex-col m-2 gap-2 border-2 border-gray-400 p-1 rounded-sm '>
           <p className='text-sky-500 font-medium uppercase tracking-wide'>{serviceInfo.serviceName}</p>
           <p className='font-semibold text-3xl text-gray-800'>{serviceInfo.name}</p>
@@ -172,37 +199,28 @@ const Booking = () => {
           </button>
         </div>
 
-        {/* Right: Placeholder or similar businesses */}
-        <div className='w-full lg:w-1/3'>
-          <p className='text-xl font-semibold mb-4'>More Services</p>
-          {/* Insert list or placeholder here */}
-          <div>
-            {serviceInfo.similarService.map((name, index) => {
-              const match = BusinessList.find(item => item.name === name);
-              return (
-                <div className='relative flex border-2 border-gray-400 m-2 rounded-md items-center' key={index} >
-                  <img className='h-20 w-24 m-1' src={match.image} alt={match.name} />
-                  <div className='flex flex-col flex-grow overflow-hidden pr-10'>
-                    <p className='text-base text-sky-400 '>{match.serviceName}</p>
-                    <p className='text-xl mb-2 break-words whitespace-normal'>{match.name}</p>
-                  </div>
-                  <button
-                    onClick={async () => {
-                      await controls.start('exit');  // Trigger exit animation
-                      navigate(`/booking/${match.name}`);
-                    }}
-                    className='absolute right-2 rounded-full'
-                  >
-                    <FontAwesomeIcon className='hover:shadow-lg transition-all hover:bg-orange-200 size-5 border-2 rounded-full border-rose-950 text-black' icon={faArrowRight}/>
-                  </button>
-                </div>
-              );
-            })}
+        <div className='flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0'>
+          <p className='flex items-center gap-2 text-2xl font-medium text-gray-900 '>{serviceInfo.name}</p>
+          <div className='flex items-center gap-2 text-sm mt-1 text-gray-600 '>
+            <p className='text-base'>{serviceInfo.serviceName}</p>
           </div>
+          {/*--------About Employee----------*/}
+          <div>
+            <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>About <FontAwesomeIcon icon={faCircleInfo} /></p>
+            <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{serviceInfo.description}</p>
+          </div>
+          <p className='text-gray-500 font-medium mt-4'>
+            Service fee: <span className='text-gray-600'>Rs.{serviceInfo.fees}</span>
+          </p>
         </div>
       </div>
+      {/*--------Related Services-------*/}
+      <RelatedServices  employeeId={employeeId} category={serviceInfo.category} />
     </motion.div>
   )
 }
 
 export default Booking
+
+
+
