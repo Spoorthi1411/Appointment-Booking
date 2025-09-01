@@ -48,7 +48,7 @@ const AppContextProvider = (props) => {
     }
 
     const value = {
-        BusinessList,
+        BusinessList,getEmployeesData,
         services: BusinessList,
         employees,
         token,setToken,

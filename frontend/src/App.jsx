@@ -34,7 +34,7 @@ const App = () => {
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/my-profile' element={<MyProfile/>}/>
           <Route path='/my-services' element={<MyServices/>}/>
-          <Route path='/booking/:servicetype' element={<Booking/>}/>
+          <Route path='/booking/:employeeId' element={<Booking/>}/>
         </Routes>
       </AnimatePresence>
       <Footer />
