@@ -48,7 +48,7 @@ const loginEmployee = async (req,res) => {
 
             res.json({success:true,token})
         }else{
-            req.json({success:false,message:'Invalid credentials'})
+            res.json({success:false,message:'Invalid credentials'})
         }
 
     } catch (error) {
@@ -71,14 +71,39 @@ const appointmentsService = async (req,res) =>{
     }
 }
 //API to markappointment completed for service panel
-const appointmentComplete= async()=>{
+const appointmentComplete= async(req,res)=>{
     try {
         const {employeeId, appointmentId} = req.body
 
         const appointmentData = await appointmentModel.findById(appointmentId)
+        if(appointmentData && appointmentData.employeeId == employeeId){
+            await appointmentModel.findByIdAndUpdate(appointmentId, {isCompleted: true});
+            return res.json({success:true,message:'Appointment completed'})
+        }else{
+            return res.json({success:false,message:'Mark Fail'})
+        }
+
     } catch (error) {
         console.log(error)
         res.json({success:false,message:error.message})
     }
 }
-export {changeAvailability,employeesList,loginEmployee,appointmentsService}
+//API to cancel appointment for service panel
+const appointmentCancel= async(req,res)=>{
+    try {
+        const {employeeId, appointmentId} = req.body
+
+        const appointmentData = await appointmentModel.findById(appointmentId)
+        if(appointmentData && appointmentData.employeeId == employeeId){
+            await appointmentModel.findByIdAndUpdate(appointmentId, {cancelled: true});
+            return res.json({success:true,message:'Appointment cancelled'})
+        }else{
+            return res.json({success:false,message:'Cancellation failed'})
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+export {changeAvailability,employeesList,loginEmployee,appointmentsService,appointmentCancel,appointmentComplete}

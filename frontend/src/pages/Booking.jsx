@@ -7,12 +7,12 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { BusinessList } from '../assets/asserts'
 import { motion } from 'framer-motion';
 import { useAnimation } from 'framer-motion';
+import { toast } from 'react-toastify'
 
 const Booking = () => {
   const {servicetype} = useParams();
   const navigate=useNavigate();
-  const {BusinessList} = useContext(AppContext)
-
+  const {BusinessList, currencySymbol, backendUrl, token, getEmployeesData} = useContext(AppContext)
   const controls = useAnimation();
 
   const daysOfWeek = ['SUN','MON','TUE','WED','THU','FRI','SAT']
@@ -71,6 +71,13 @@ const Booking = () => {
       }
 
       setServiceSlots(prev => ([...prev,timeSlots]))
+    }
+  }
+
+  const bookAppointment = async () => {
+    if (!token) {
+      toast.warn('Login to book appointment')
+      return navigate('/login')
     }
   }
 
@@ -160,7 +167,7 @@ const Booking = () => {
             </div>
           </div>
 
-          <button className='bg-[#d86e7c] hover:bg-[#c35e6d] transition-all duration-200 text-white text-sm font-semibold px-14 py-3 w-fit rounded-full my-6 shadow-md'>
+          <button onClick={bookAppointment} className='bg-[#d86e7c] hover:bg-[#c35e6d] transition-all duration-200 text-white text-sm font-semibold px-14 py-3 w-fit rounded-full my-6 shadow-md'>
             Book Service
           </button>
         </div>

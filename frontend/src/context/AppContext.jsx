@@ -54,7 +54,7 @@ const AppContextProvider = (props) => {
         token,setToken,
         backendUrl,
         userData,setUserData,
-        loadUserProfileData
+        loadUserProfileData,getEmployeesData,
     }
 
     useEffect(()=>{
