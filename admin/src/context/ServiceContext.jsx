@@ -9,19 +9,7 @@ const ServiceContextProvider = (props) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [dToken,setDToken] = useState(localStorage.getItem('dToken')? localStorage.getItem('dToken'):'')
-    const [appointments, setAppointments] =useState([
-        {
-            userData: {
-            name: "John Doe",
-            image: assets.tick_icon,
-            address: "123 Main Street, NY"
-            },
-            payment: true,
-            slotDate: new Date(),
-            slotTime: "10:30 AM",
-            amount: 500
-        }
-    ])
+    const [appointments, setAppointments] =useState([])
 
     const getAppointments = async()=>{
         try {
@@ -42,7 +30,7 @@ const ServiceContextProvider = (props) => {
 
     const completeAppointment= async (appointmentId) => {
         try {
-            const {data} = await axios.post(backendUrl+'/api/service/complete-appointment', {appointmentId},{headers:{dToken}})
+            const {data} = await axios.post(backendUrl+'/api/employee/complete-appointment', {appointmentId},{headers:{dToken}})
             if (data.success) {
                 toast.success(data.message)
                 getAppointments()
@@ -56,7 +44,7 @@ const ServiceContextProvider = (props) => {
     }
     const cancelAppointment= async (appointmentId) => {
         try {
-            const {data} = await axios.post(backendUrl+'/api/service/cancel-appointment', {appointmentId},{headers:{dToken}})
+            const {data} = await axios.post(backendUrl+'/api/employee/cancel-appointment', {appointmentId},{headers:{dToken}})
             if (data.success) {
                 toast.success(data.message)
                 getAppointments()

@@ -73,10 +73,14 @@ const appointmentsService = async (req,res) =>{
 //API to markappointment completed for service panel
 const appointmentComplete= async(req,res)=>{
     try {
-        const {employeeId, appointmentId} = req.body
+        const {appointmentId} = req.body
+        const employeeId = req.user.id;
+        
 
         const appointmentData = await appointmentModel.findById(appointmentId)
-        if(appointmentData && appointmentData.employeeId == employeeId){
+        console.log("DB employeeId:", appointmentData.employeeId.toString());
+        console.log("Token employeeId:", employeeId.toString());
+        if(appointmentData && appointmentData.employeeId.toString() === employeeId.toString()){
             await appointmentModel.findByIdAndUpdate(appointmentId, {isCompleted: true});
             return res.json({success:true,message:'Appointment completed'})
         }else{
@@ -91,10 +95,13 @@ const appointmentComplete= async(req,res)=>{
 //API to cancel appointment for service panel
 const appointmentCancel= async(req,res)=>{
     try {
-        const {employeeId, appointmentId} = req.body
-
+        const {appointmentId} = req.body
+        const employeeId = req.user.id;
+        
         const appointmentData = await appointmentModel.findById(appointmentId)
-        if(appointmentData && appointmentData.employeeId == employeeId){
+        console.log("DB employeeId:", appointmentData.employeeId.toString());
+        console.log("Token employeeId:", employeeId.toString());
+        if(appointmentData && appointmentData.employeeId.toString() === employeeId.toString()){
             await appointmentModel.findByIdAndUpdate(appointmentId, {cancelled: true});
             return res.json({success:true,message:'Appointment cancelled'})
         }else{

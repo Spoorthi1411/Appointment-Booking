@@ -6,9 +6,11 @@ const AppContextProvider = (props) => {
     const currency= '$'
 
     const months = ["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    const slotDateFormat =(slotDate)=>{
+    const slotDateFormat =(slotDate, slotTime)=>{
+        if (!slotDate) return "";
         const dateArray = slotDate.split('_')
-        return dateArray[0]+" "+months[Number(dateArray[1])] + " "+ dateArray[2]
+        const formattedDate = `${dateArray[0]} ${months[Number(dateArray[1])]} ${dateArray[2]}`;
+        return slotTime ? `${formattedDate}, ${slotTime}` : formattedDate;
     }
     const value = {
         slotDateFormat,

@@ -10,9 +10,9 @@ export const ServiceAppointments = () => {
   const {dToken,appointments,getAppointments, completeAppointment, cancelAppointment } = useContext(ServiceContext)
   const {slotDateFormat,currency} = useContext(AppContext)
   useEffect(()=>{
-    // if(dToken){
-    //   getAppointments()
-    // }
+    if(dToken){
+      getAppointments()
+    }
   },[dToken])
 
   return (
@@ -40,8 +40,8 @@ export const ServiceAppointments = () => {
                     {item.payment ? 'Online' : 'Cash'}
                   </p>
                 </div>
-                <p>{item.userData.address}</p>
-                <p>{slotDateFormat(item.slotDate?.toString())},{item.slotTime}</p>
+                <p>{item.userData.address?.line1}, {item.userData.address?.line2}</p>
+                <p>{slotDateFormat(item.slotDate)},{item.slotTime}</p>
                 <p>{currency}{item.amount}</p>
                 <div className='flex'>
                   <img onClick={()=>cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
