@@ -78,8 +78,6 @@ const appointmentComplete= async(req,res)=>{
         
 
         const appointmentData = await appointmentModel.findById(appointmentId)
-        console.log("DB employeeId:", appointmentData.employeeId.toString());
-        console.log("Token employeeId:", employeeId.toString());
         if(appointmentData && appointmentData.employeeId.toString() === employeeId.toString()){
             await appointmentModel.findByIdAndUpdate(appointmentId, {isCompleted: true});
             return res.json({success:true,message:'Appointment completed'})
@@ -99,8 +97,6 @@ const appointmentCancel= async(req,res)=>{
         const employeeId = req.user.id;
         
         const appointmentData = await appointmentModel.findById(appointmentId)
-        console.log("DB employeeId:", appointmentData.employeeId.toString());
-        console.log("Token employeeId:", employeeId.toString());
         if(appointmentData && appointmentData.employeeId.toString() === employeeId.toString()){
             await appointmentModel.findByIdAndUpdate(appointmentId, {cancelled: true});
             return res.json({success:true,message:'Appointment cancelled'})
