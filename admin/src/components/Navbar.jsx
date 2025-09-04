@@ -2,17 +2,20 @@ import React, { useContext } from 'react'
 import { AdminContext } from '../context/AdminContext'
 import { assets } from '../assets/assets'
 import {useNavigate} from 'react-router-dom'
+import { ServiceContext } from '../context/ServiceContext'
 
 const Navbar = () => {
 
     const {aToken,setAToken} = useContext(AdminContext)
-
+    const {dToken, setDToken} = useContext(ServiceContext)
     const navigate = useNavigate()
 
     const logout = () => {
         navigate('/')
         aToken && setAToken('')
         aToken && localStorage.removeitem('aToken')
+        dToken && setDToken('')
+        dToken && localStorage.removeitem('dToken')
     }
 
   return (
@@ -27,7 +30,7 @@ const Navbar = () => {
         </div>
         <p className='border px-2.5 py-0.5 rounded-full border-gray-400 text-gray-500'>{aToken ? 'Admin' : 'Service'}</p>
       </div>
-      <button className='bg-[#d86e7c] text-white text-sm px-10 py-2 rounded-full '>Logout</button>
+      <button onClick={logout} className='bg-[#d86e7c] text-white text-sm px-10 py-2 rounded-full '>Logout</button>
     </div>
   )
 }

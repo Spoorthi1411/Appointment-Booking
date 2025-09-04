@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AdminContext } from './context/AdminContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import AllAppointments from './pages/admin/AllAppointments';
 import ServicesList from './pages/admin/ServicesList';
 import Dashboard from './pages/admin/Dashboard';
@@ -16,37 +16,40 @@ import ServiceAppointments from './pages/service/ServiceAppointments';
 import ServiceProfile from './pages/Service/serviceProfile';
 
 
+
 const App = () => {
 
-  const {aToken} = useContext(AdminContext)
-  const {dToken} = useContext(ServiceContext)
+  const { aToken } = useContext(AdminContext)
+  const { dToken } = useContext(ServiceContext)
 
-  return aToken || dToken? (
+  return aToken || dToken ? (
     <div className='bg-[#F8F9FD]'>
-      <ToastContainer/>
-      <Navbar/>
+      <ToastContainer />
+      <Navbar />
       <div className='flex items-start'>
-        <Sidebar/>
+        <Sidebar />
         <Routes>
           {/* Admin Route */}
-          <Route path='/' element={<></>} />
-          <Route path='/admin-dashboard' element={<Dashboard/>} />
-          <Route path='/all-appointments' element={<AllAppointments/>} />
-          <Route path='/add-service' element={<AddService/>} />
-          <Route path='/service-list' element={<ServicesList/>} />
-          <Route path='/service-list/:category' element={<ServicesList/>}/>
+          <Route path="/" element={
+            aToken ? <Navigate to="/admin-dashboard" /> : dToken ? <Navigate to="/service-dashboard" /> : <Login />
+          } />
+          <Route path='/admin-dashboard' element={<Dashboard />} />
+          <Route path='/all-appointments' element={<AllAppointments />} />
+          <Route path='/add-service' element={<AddService />} />
+          <Route path='/service-list' element={<ServicesList />} />
+          <Route path='/service-list/:category' element={<ServicesList />} />
 
           {/* service Route */}
-          <Route path='/service-dashboard' element={<ServiceDashboard/>} />
-          <Route path='/service-appointments' element={<ServiceAppointments/>} />
-          <Route path='/service-profile' element={<ServiceProfile/>} />
+          <Route path='/service-dashboard' element={<ServiceDashboard />} />
+          <Route path='/service-appointments' element={<ServiceAppointments />} />
+          <Route path='/service-profile' element={<ServiceProfile />} />
         </Routes>
       </div>
     </div>
   ) : (
     <>
       <Login />
-      <ToastContainer/>
+      <ToastContainer />
     </>
   )
 }

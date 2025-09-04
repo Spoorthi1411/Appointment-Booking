@@ -6,7 +6,7 @@ import appointmentModel from "../models/appointmentModel.js"
 
 const changeAvailability = async (req,res) => {
     try {
-        const { employeeId } = req.body;
+        const employeeId = req.user.id;
 
         if (!employeeId) {
             return res.status(400).json({ success: false, message: "Employee ID missing" });
@@ -109,4 +109,82 @@ const appointmentCancel= async(req,res)=>{
         res.json({success:false,message:error.message})
     }
 }
-export {changeAvailability,employeesList,loginEmployee,appointmentsService,appointmentCancel,appointmentComplete}
+//API to get dashboard data for doctor panel
+const serviceDashboard= async(req, res)=>{
+
+    try {
+        const employeeId=req.user.id;
+
+        const appointments= await appointmentModel.find({employeeId})
+
+        let earnings=0
+
+        appointments.map((item)=>{
+            if(item.isCompleted || item.payment){
+                earnings+= item.amount
+            }
+        })
+
+        let customers= []
+
+        appointments.map((item)=>{
+            if(!customers.includes(item.userId)){
+                customers.push(item.userId)
+            }
+        })
+
+        const dashData={
+            earnings,
+            appointments: appointments.length,
+            customers: customers.length,
+            latestAppointments: appointments.reverse().slice(0,5)
+        }
+
+
+        res.json({success:true, dashData})
+
+
+
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+
+}
+
+//Api to get employee profile for servide panel
+const serviceProfile=async (req,res) => {
+    try {
+        
+        const employeeId=req.user.id;
+        const profileData =await BusinessListModel.findById(employeeId).select('-password')
+
+        res.json({success:true, profileData})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+//API to update service profile data from service panel
+
+const updateServiceProfile = async (req,res) => {
+    try {
+        const { fees ,available}=req.body
+        const employeeId=req.user.id;
+
+        await BusinessListModel.findByIdAndUpdate(employeeId, {fees, available})
+
+        res.json({success:true,message:'Profile updated'})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+
+export {updateServiceProfile, serviceProfile, changeAvailability,employeesList,loginEmployee,appointmentsService,appointmentCancel,appointmentComplete, serviceDashboard}
