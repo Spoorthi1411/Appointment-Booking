@@ -61,11 +61,21 @@ const Booking = () => {
       while(currentDate < endTime){
         let formattedTime = currentDate.toLocaleTimeString([], { hour:'2-digit',minute:'2-digit'})
 
-        timeSlots.push({
-          datetime: new Date(currentDate),
-          time: formattedTime
-        })
+        let day = currentDate.getDate()
+        let month = currentDate.getMonth()+1
+        let year = currentDate.getFullYear()
 
+        const slotDate = day + "-" + month + "-" + year
+        const slotTime = formattedTime
+
+        const isSlotAvailable = serviceInfo.slots_booked[slotDate] && serviceInfo.slots_booked[slotDate].includes(slotTime) ? false : true
+        
+        if(isSlotAvailable){
+          timeSlots.push({
+            datetime : new Date(currentDate),
+            time: formattedTime
+          })
+        }
 
         currentDate.setMinutes(currentDate.getMinutes()+60)
 
@@ -106,9 +116,12 @@ const Booking = () => {
         },
         employeeData: {
           name: serviceInfo.name,
-          specialization: serviceInfo.role,
+          specialization: serviceInfo.category,
+          image:serviceInfo.image,
+          servicetype: serviceInfo.serviceName,
+          fees: serviceInfo.fees,
         },
-        amount: serviceInfo.price,           // service cost
+        amount: serviceInfo.fees,           // service cost
         date: Date.now(),                        // booking created time
       },{headers:{token}})
       if(data.success){
@@ -168,19 +181,19 @@ const Booking = () => {
             {
               serviceSlots.length && serviceSlots.map((item,idx)=>(
                 <div onClick={()=>setSlotIndex(idx)} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === idx ? 'bg-[#d86e7c] text-white': 'border border-gray-200'}`} key={idx}>
-                  <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
-                  <p>{item[0] && item[0].datetime.getDate()}</p>
+                  <p>{daysOfWeek[new Date().getDay() + idx > 6 ? (new Date().getDay() + idx - 7) : (new Date().getDay() + idx)]}</p>
+                  <p>{new Date(new Date().setDate(new Date().getDate() + idx)).getDate()}</p>
                 </div>
               ))
             }
           </div>
 
-          <div id="slot-scroll" className="flex items-center justify-start w-full overflow-x-auto mt-4 px-4 scrollbar-thin scrollbar-thumb-gray-300" > 
+          <div id="slot-scroll" className="flex items-center justify-center w-full overflow-x-auto mt-4 px-4 scrollbar-thin scrollbar-thumb-gray-300" > 
             <div className="inline-flex gap-3 "> 
               {serviceSlots.length > 0 && serviceSlots[slotIndex]?.length > 0 ? ( serviceSlots[slotIndex].map((item, index) => ( 
                 <p key={index} onClick={() => setSlotTime(item.time)} className={`text-sm font-medium flex-shrink-0 px-6 py-2 rounded-full cursor-pointer capitalize ${item.time === slotTime ? 'bg-[#d86e7c] text-white ring-2 ring-[#b6505f]' : 'text-gray-700 border border-gray-300 bg-white'} shadow-sm hover:shadow-lg transition-all duration-150 active:scale-95 ml-2 first:ml-0 mr-2 last:mr-0`} > 
                   {item.time.toLowerCase()} 
-                </p> )) ) : ( <p className="text-sm text-gray-500 font-medium px-4 py-2"> No slots available for this day </p> )} 
+                </p> )) ) : ( <p className="text-sm text-gray-500 font-medium px-4 py-2 "> No slots available for this day </p> )} 
             </div> 
           </div>
           <button onClick={bookAppointment} className='mt-4  bg-[#d86e7c] text-white text-sm font-light px-14 py-3 rounded-full '>Book Service</button>
