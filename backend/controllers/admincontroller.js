@@ -5,6 +5,7 @@ import BusinessListModel from "../models/BusinessListModel.js"
 import path from 'path';
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
+import appointmentModel from "../models/appointmentModel.js";
 
 
 //API for adding service
@@ -106,5 +107,6 @@ const allEmployees = async (req,res)=>{
         res.json({success:false,message:error.message})
     }
 }
+
 
 export {addService,loginAdmin,allEmployees}
