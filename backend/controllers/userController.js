@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import {v2 as cloudinary} from 'cloudinary'
 import BusinessListModel from '../models/BusinessListModel.js';
 import appointmentModel from '../models/appointmentModel.js';
+import razorpay from 'razorpay'
 
 //API to register user
 const registerUser = async(req,res)=>{
@@ -184,4 +185,49 @@ const listServices = async (req,res) => {
     }
 }
 
-export {registerUser,loginUser,getProfile,updateProfile,bookAppointment,listServices}
+//API to cancel the aapointment
+const cancelAppointment = async(req,res)=>{
+    try {
+        
+        const {userId,bookingId} = req.body
+
+        const bookingData= await appointmentModel.findById(bookingId)
+
+        //verify appointment user
+        if(bookingData.userId.toString() !== req.userId){
+            return res.json({success:false,message:'Unauthorized action'})
+        }
+
+        await appointmentModel.findByIdAndUpdate(bookingId,{cancelled:true})
+
+        //releasing service provider slot
+        const {employeeId,slotDate,slotTime} = bookingData
+
+        const employeeData = await BusinessListModel.findById(employeeId)
+
+        let slots_booked = employeeData.slots_booked
+
+        slots_booked[slotDate]=slots_booked[slotDate].filter(e => e != slotTime)
+
+        await BusinessListModel.findByIdAndUpdate(employeeId,{slots_booked})
+
+        res.json({success:true,message:'Appoitment Cancelled'})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+const razorpayInstance = new razorpay({
+    key_id:'',
+    key_secret:''
+})
+
+//API to make payment of appointment using razorpay
+const paymentRazorPay = async(req,res)=>{
+
+}
+
+
+export {registerUser,loginUser,getProfile,updateProfile,bookAppointment,listServices,cancelAppointment}
