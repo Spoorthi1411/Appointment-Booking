@@ -13,9 +13,9 @@ const Navbar = () => {
     const logout = () => {
         navigate('/')
         aToken && setAToken('')
-        aToken && localStorage.removeitem('aToken')
+        aToken && localStorage.removeItem('aToken')
         dToken && setDToken('')
-        dToken && localStorage.removeitem('dToken')
+        dToken && localStorage.removeItem('dToken')
     }
 
   return (

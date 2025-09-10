@@ -6,6 +6,8 @@ import appointment_icon from "./appointment_icon.png";
 import user from "./user.png";
 import list from "./list.png";
 import earnings from "./earnings.png";
+import employee from "./employee.png"
+
 export const assets = {
     logo,
     profile,
@@ -15,4 +17,5 @@ export const assets = {
     user,
     list,
     earnings,
+    employee,
 };

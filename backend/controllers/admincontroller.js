@@ -109,4 +109,73 @@ const allEmployees = async (req,res)=>{
 }
 
 
-export {addService,loginAdmin,allEmployees}
+//API to get all appointments list
+const appointmentsAdmin = async(req,res)=>{
+    try {
+
+        const appointments = await appointmentModel.find({})
+        res.json({success:true,appointments})
+        
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+//API for appointment cancellation
+const appointmentCancel = async (req, res) => {
+    try {
+
+        const { appointmentId } = req.body
+
+        const bookingData = await appointmentModel.findById(appointmentId)
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+
+        //releasing service provider slot
+        const { employeeId, slotDate, slotTime } = bookingData
+
+        const employeeData = await BusinessListModel.findById(employeeId)
+
+        let slots_booked = employeeData.slots_booked
+
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e != slotTime)
+
+        await BusinessListModel.findByIdAndUpdate(employeeId, { slots_booked })
+
+        res.json({ success: true, message: 'Appoitment Cancelled' })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+//API to get dashboard data fpr admin panel
+const adminDashboard= async(req, res)=>{
+
+    try {
+        const employees=await BusinessListModel.find({})
+
+        const users = await userModel.find({})
+
+        const appointments= await appointmentModel.find({})
+
+        const dashData = {
+            employees : employees.length,
+            appointments:appointments.length,
+            users : users.length,
+            latestAppointments:appointments.reverse().slice(0,5)
+        }
+
+        res.json({success:true, dashData})
+
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+
+}
+
+export {addService,loginAdmin,allEmployees,appointmentsAdmin,appointmentCancel,adminDashboard}
