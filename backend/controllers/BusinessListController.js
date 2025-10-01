@@ -169,10 +169,10 @@ const serviceProfile=async (req,res) => {
 
 const updateServiceProfile = async (req,res) => {
     try {
-        const { fees ,available}=req.body
+        const { fees ,available,description}=req.body
         const employeeId=req.user.id;
 
-        await BusinessListModel.findByIdAndUpdate(employeeId, {fees, available})
+        await BusinessListModel.findByIdAndUpdate(employeeId, {fees, available,description})
 
         res.json({success:true,message:'Profile updated'})
 

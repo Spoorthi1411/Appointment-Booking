@@ -13,7 +13,7 @@ import AddService from './pages/admin/AddService';
 import { ServiceContext } from './context/ServiceContext';
 import ServiceDashboard from './pages/Service/serviceDashboard';
 import ServiceAppointments from './pages/service/ServiceAppointments';
-import ServiceProfile from './pages/Service/serviceProfile';
+import ServiceProfile from './pages/service/ServiceProfile';
 
 
 

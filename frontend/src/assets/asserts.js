@@ -8,9 +8,11 @@ import plumber from "./plumber.jpeg";
 import profile from "./profile.png";
 import shifting from "./shifting.jpeg";
 import logo from "./logo.jpg";
+import aboutUs from "./aboutUs.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBroom, faTools, faPaintRoller, faTruckMoving, faBolt } from "@fortawesome/free-solid-svg-icons";
 export const asserts={
+    aboutUs,
     bathroom_clean,
     electricity,
     dry_cleaning,
@@ -73,7 +75,7 @@ export const BusinessList /*(doctors)*/=[
         image:dry_cleaning,
         serviceName:'cleaning',
         similarService:['House Cleaning','Bathroom Cleaning'],
-        description:'No time for laundry? We’ve got you covered! Enjoy clean, fresh, and neatly folded clothes with our affordable laundry and dry-cleaning services. Doorstep pickup and delivery make it totally hassle-free.',
+        description:'No time for laundry? We got you covered! Enjoy clean, fresh, and neatly folded clothes with our affordable laundry and dry-cleaning services. Doorstep pickup and delivery make it totally hassle-free.',
     },
     {
         name:'Painting',
